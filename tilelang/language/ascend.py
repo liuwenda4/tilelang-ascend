@@ -314,6 +314,49 @@ def sync_all():
     return tir.call_intrin("handle", tir.op.Op.get("tl.ascend_sync_all"))
 
 
+def shmem_mte_quiet():
+    """Waits for prior SHMEM MTE NBI operations to complete."""
+    return tir.call_intrin("handle", tir.op.Op.get("tl.ascend_shmem_mte_quiet"))
+
+
+def shmem_signal_wait_until(
+    signal: Buffer,
+    offset: PrimExpr,
+    cmp: PrimExpr,
+    value: PrimExpr,
+):
+    """Waits until a remote SHMEM signal satisfies the comparison."""
+    return tir.call_intrin(
+        "handle",
+        tir.op.Op.get("tl.ascend_shmem_signal_wait_until"),
+        f"shmem_signal_wait_until<{_dtype(signal)}>",
+        signal.access_ptr("r"),
+        offset,
+        cmp,
+        value,
+    )
+
+
+def shmem_signal_op(
+    signal: Buffer,
+    offset: PrimExpr,
+    value: PrimExpr,
+    signal_op: PrimExpr,
+    newPe: PrimExpr,
+):
+    """Atomically update a remote SHMEM signal after prior payload puts."""
+    return tir.call_intrin(
+        "handle",
+        tir.op.Op.get("tl.ascend_shmem_signal_op"),
+        f"shmem_signal_op<{_dtype(signal)}>",
+        signal.access_ptr("w"),
+        offset,
+        value,
+        signal_op,
+        newPe,
+    )
+
+
 def shmem_put_nbi(dst: Buffer, src: Buffer, nelems: PrimExpr, newPe: PrimExpr):
     """Performs a shmem put nbi operation.
 

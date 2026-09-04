@@ -379,6 +379,27 @@ CATLASS_DEVICE void elementwise_binary(LocalTensor<T> const &ubIn0,
   }
 }
 
+CATLASS_DEVICE void shmem_mte_quiet() { aclshmemx_mte_quiet(); }
+
+template <typename T>
+CATLASS_DEVICE void shmem_signal_op(const GlobalTensor<T> &signal,
+                                    size_t offset, int32_t value,
+                                    int signal_op, int newPe) {
+  auto *address = reinterpret_cast<__gm__ int32_t *>(
+      const_cast<__gm__ T *>(signal.GetPhyAddr()) + offset);
+  aclshmemx_signal_op(address, value, signal_op, newPe);
+}
+
+template <typename T>
+CATLASS_DEVICE void shmem_signal_wait_until(const GlobalTensor<T> &signal,
+                                            size_t offset, int cmp,
+                                            int32_t value) {
+  auto *address = reinterpret_cast<__gm__ int32_t *>(
+      const_cast<__gm__ T *>(signal.GetPhyAddr() + offset));
+  aclshmem_signal_wait_until(
+      address, static_cast<aclshmem_cmp_op_type_t>(cmp), value);
+}
+
 template <typename T>
 CATLASS_DEVICE void shmem_put_nbi(const GlobalTensor<T> &output,
                                   const GlobalTensor<T> &input, size_t nelems,

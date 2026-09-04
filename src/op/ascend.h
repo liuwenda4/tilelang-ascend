@@ -150,6 +150,12 @@ TVM_DLL const Op &ascend_merge_sort();
 
 TVM_DLL const Op &ascend_topk();
 
+TVM_DLL const Op &ascend_shmem_mte_quiet();
+
+TVM_DLL const Op &ascend_shmem_signal_wait_until();
+
+TVM_DLL const Op &ascend_shmem_signal_op();
+
 TVM_DLL const Op &ascend_shmem_put_nbi();
 
 TVM_DLL const Op &ascend_shmem_get_nbi();

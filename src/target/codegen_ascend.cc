@@ -611,6 +611,16 @@ void CodeGenTileLangAscend::VisitExpr_(const CallNode *op, std::ostream &os) {
     MergeSortCodegen(op);
   } else if (op->op.same_as(tl::ascend_topk())) {
     TopKCodegen(op);
+  } else if (op->op.same_as(tl::ascend_shmem_mte_quiet())) {
+    PrintOpCall(op, "tl::ascend::shmem_mte_quiet", {0, 0}, {0, 0});
+  } else if (op->op.same_as(tl::ascend_shmem_signal_wait_until())) {
+    std::string op_name =
+        "tl::ascend::" + Downcast<StringImm>(op->args[0])->value;
+    PrintOpCall(op, op_name, {1, 2}, {2, op->args.size()});
+  } else if (op->op.same_as(tl::ascend_shmem_signal_op())) {
+    std::string op_name =
+        "tl::ascend::" + Downcast<StringImm>(op->args[0])->value;
+    PrintOpCall(op, op_name, {1, 2}, {2, op->args.size()});
   } else if (op->op.same_as(tl::ascend_shmem_get_nbi())) {
     ShmemCodegen(op);
   } else if (op->op.same_as(tl::ascend_shmem_put_nbi())) {

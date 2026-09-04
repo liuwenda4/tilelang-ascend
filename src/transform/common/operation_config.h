@@ -221,6 +221,7 @@ GetOperationConfig() {
       {"tl.ascend_shmem_put_nbi", {{{1, "write"}, {2, "read"}}, "PIPE_MTE3"}},
       {"tl.ascend_shmem_ub_put_nbi",
        {{{1, "read"}, {2, "write"}}, "PIPE_MTE3"}},
+      {"tl.ascend_shmem_signal_op", {{{1, "write"}}, "PIPE_MTE3"}},
 
       {"tl.ascend_scalar", {{{0, "write"}, {1, "read"}}, "PIPE_S"}},
       {"tl.ascend_gatherb",
